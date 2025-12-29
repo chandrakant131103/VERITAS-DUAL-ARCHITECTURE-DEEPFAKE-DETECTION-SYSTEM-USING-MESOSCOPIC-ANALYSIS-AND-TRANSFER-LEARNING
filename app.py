@@ -8,13 +8,13 @@ import os
 
 # --- PAGE CONFIG ---
 st.set_page_config(
-    page_title="Veritas | Deepfake Detector - Chandrakant",
+    page_title="Veritas | Deepfake Detector",
     page_icon="🛡️",
     layout="centered"
 )
 
 # --- TITLE & HEADER ---
-st.title("🛡️ Veritas: Deepfake Detection System Chandrakant")
+st.title("🛡️ Veritas: Deepfake Detection System")
 st.markdown("### Powered by MesoNet Architecture")
 st.write("Upload an image to verify if it is **Real** or **AI-Generated**.")
 
@@ -25,12 +25,6 @@ st.sidebar.info(
     This system uses a **Convolutional Neural Network (MesoNet)** trained on 
     140,000 face images to detect compression artifacts and texture 
     inconsistencies common in deepfakes.
-
-First, the architecture and generalization are limited. You utilized MesoNet, a lightweight CNN from 2018, which is efficient but "shallow." It analyzes local texture patterns (pixel noise) rather than understanding the global context, meaning it might miss obvious anatomical errors like a person having three hands if the skin texture looks realistic. Additionally, your model is essentially a "Stable Diffusion Detector" rather than a universal AI detector. It suffers from generator bias, meaning while it excels at catching the specific models it was trained on, it may struggle to detect images from newer, unseen generators like Flux or DALL-E 3 due to poor cross-generator generalization.
-
-Second, the system struggles with the "Smartphone Conflict," leading to false positives. Modern smartphones (like iPhones and Pixels) use aggressive computational photography techniques, such as HDR and skin smoothing, to denoise photos. To your model, this digital smoothing looks mathematically identical to the denoising artifacts found in diffusion-based deepfakes. This results in a significant flaw where high-quality, real photos are occasionally flagged as "Fake" because the model lacks the ability to distinguish between generative noise and standard mobile image processing.
-
-Third, the model is fragile against real-world compression. MesoNet relies on detecting microscopic, high-frequency pixel artifacts to identify fakes. Social media platforms like WhatsApp or Instagram apply heavy JPEG compression that effectively "scrubs" these faint artifacts away. Consequently, while your tool works well on high-quality PNGs, its accuracy would likely drop sharply if tested on compressed images downloaded from social media, making it less robust for practical, everyday forensic use without further training on compressed data.
     """
 )
 
