@@ -8,13 +8,13 @@ import os
 
 # --- PAGE CONFIG ---
 st.set_page_config(
-    page_title="Veritas | Deepfake Detector",
+    page_title="Veritas | Deepfake Detector - Chandrakant ",
     page_icon="🛡️",
     layout="centered"
 )
 
 # --- TITLE & HEADER ---
-st.title("🛡️ Veritas: Deepfake Detection System")
+st.title("🛡️ Veritas: Deepfake Detection System - Chandrakant Barik")
 st.markdown("### Powered by MesoNet Architecture")
 st.write("Upload an image to verify if it is **Real** or **AI-Generated**.")
 
@@ -95,3 +95,4 @@ if uploaded_file is not None:
             
         # Add a progress bar for visual flair
         st.progress(float(prediction), text="Probability Scale (Left=Fake, Right=Real)")
+
