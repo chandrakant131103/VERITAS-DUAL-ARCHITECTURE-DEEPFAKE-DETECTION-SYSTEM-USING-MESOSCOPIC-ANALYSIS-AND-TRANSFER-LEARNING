@@ -23,16 +23,26 @@ st.sidebar.header("About the Project")
 st.sidebar.info(
     """
     This system uses a **Convolutional Neural Network (MesoNet)** trained on 
-    140,000 face images to detect compression artifacts and texture 
+    face images to detect compression artifacts and texture 
     inconsistencies common in deepfakes.
     """
 )
 
-# --- LOAD MODEL (Cached so it doesn't reload every time) ---
+# --- LOAD MODEL (Robust Check) ---
 @st.cache_resource
 def load_deepfake_model():
-    # Path to your saved model
-    model_path = os.path.join("models", "mesonet_best.h5")
+    # Check if model is in 'models' folder (Local) or Root (Cloud)
+    local_path = os.path.join("models", "mesonet_best.h5")
+    cloud_path = "mesonet_best.h5"
+    
+    if os.path.exists(local_path):
+        model_path = local_path
+    elif os.path.exists(cloud_path):
+        model_path = cloud_path
+    else:
+        raise FileNotFoundError("Model file 'mesonet_best.h5' not found in Root or 'models/' folder.")
+
+    # Load the model
     model = load_model(model_path)
     return model
 
@@ -41,6 +51,7 @@ try:
         model = load_deepfake_model()
 except Exception as e:
     st.error(f"Error loading model: {e}")
+    # Stop execution if model fails
     st.stop()
 
 # --- IMAGE PREPROCESSING ---
@@ -72,7 +83,7 @@ if uploaded_file is not None:
         st.subheader("Forensic Analysis Report")
         
         # Determine Real vs Fake
-        # Recall: < 0.5 is Fake, > 0.5 is Real (based on your folder structure)
+        # THRESHOLD LOGIC: > 0.5 is REAL, < 0.5 is FAKE
         if prediction > 0.5:
             confidence = (prediction - 0.5) * 2 * 100
             st.success(f"✅ **RESULT: REAL FACE**")
@@ -83,5 +94,4 @@ if uploaded_file is not None:
             st.metric(label="Confidence Score", value=f"{confidence:.2f}%")
             
         # Add a progress bar for visual flair
-        # Map 0-1 score to a progress bar where 0=Fake, 1=Real
         st.progress(float(prediction), text="Probability Scale (Left=Fake, Right=Real)")
